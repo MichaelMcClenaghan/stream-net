@@ -5,7 +5,7 @@ This is a fork of shawnspeak's .NET getstream.io client that has been adapted fo
 
 ### Installation
 
-Visit the Releases section to download the latest .unitypackage and add it to your project.
+Visit the [Releases](https://github.com/MichaelMcClenaghan/stream-net-unity/releases) section to download the latest .unitypackage and add it to your project.
 
 ### Usage
 
