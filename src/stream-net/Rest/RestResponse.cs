@@ -18,14 +18,14 @@ namespace Stream.Rest
 
         public Exception ErrorException { get; set; }
 
-        internal static async Task<RestResponse> FromResponseMessage(HttpResponseMessage message)
+        internal static async Task<RestResponse> FromResponseMessage(string messageText, HttpStatusCode statusCode)
         {
             var response = new RestResponse()
             {
-                StatusCode = message.StatusCode
+                StatusCode = statusCode
             };
             
-            response.Content = await message.Content.ReadAsStringAsync();
+            response.Content = messageText;
 
             return response;
         }

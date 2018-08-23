@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Net;
-using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using UnityEngine;
+using UnityEngine.Networking;
 
 namespace Stream.Rest
 {
@@ -17,25 +18,26 @@ namespace Stream.Rest
             _timeout = timeout;
         }
 
-        private HttpClient BuildClient(RestRequest request)
+        private UnityWebRequest BuildClient(RestRequest request)
         {
-#if NET45
-            ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-#endif
-            var client = new HttpClient();
-            
-            client.DefaultRequestHeaders.Accept.Clear();
-            client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+            //var client = new HttpClient();
+            var unityClient = new UnityWebRequest();
 
-            client.Timeout = _timeout;
+            //client.DefaultRequestHeaders.Accept.Clear()
+            //client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+            unityClient.SetRequestHeader("Accept", "applicaiton/json");
+
+            //client.Timeout = _timeout;
+            unityClient.timeout = _timeout.Seconds;
 
             // add request headers
             request.Headers.ForEach(h =>
             {
-                client.DefaultRequestHeaders.Add(h.Key, h.Value);
+                //client.DefaultRequestHeaders.Add(h.Key, h.Value);
+                unityClient.SetRequestHeader(h.Key, h.Value);
             });
 
-            return client;
+            return unityClient;
         }
 
         public TimeSpan Timeout
@@ -48,8 +50,18 @@ namespace Stream.Rest
         {
             using (var client = BuildClient(request))
             {
-                HttpResponseMessage response = await client.GetAsync(url);
-                return await RestResponse.FromResponseMessage(response);
+                client.method = UnityWebRequest.kHttpVerbGET;
+                client.url = url.ToString();
+
+                client.downloadHandler = new DownloadHandlerBuffer();
+
+                await client.SendWebRequest();
+
+                if (client.isNetworkError || client.isHttpError) {
+                    return new RestResponse() { StatusCode = (HttpStatusCode)client.responseCode, ErrorMessage = client.error, ErrorException = new Exception(client.error), Content = client.downloadHandler.text };
+                } else {
+                    return await RestResponse.FromResponseMessage(client.downloadHandler.text, (HttpStatusCode)client.responseCode);
+                }
             }
         }
 
@@ -57,8 +69,21 @@ namespace Stream.Rest
         {
             using (var client = BuildClient(request))
             {
-                HttpResponseMessage response = await client.PostAsync(url, new StringContent(request.JsonBody, Encoding.UTF8, "application/json"));
-                return await RestResponse.FromResponseMessage(response);
+                client.method = UnityWebRequest.kHttpVerbPOST;
+                client.url = url.ToString();
+
+                client.downloadHandler = new DownloadHandlerBuffer();
+                client.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(request.JsonBody));
+
+                client.SetRequestHeader("Content-Type", "application/json");
+
+                await client.SendWebRequest();
+
+                if (client.isNetworkError || client.isHttpError) {
+                    return new RestResponse() { StatusCode = (HttpStatusCode)client.responseCode, ErrorMessage = client.error, ErrorException = new Exception(client.error), Content = client.downloadHandler.text };
+                } else {
+                    return await RestResponse.FromResponseMessage(client.downloadHandler.text, (HttpStatusCode)client.responseCode);
+                }
             }
         }
 
@@ -66,8 +91,18 @@ namespace Stream.Rest
         {
             using (var client = BuildClient(request))
             {
-                HttpResponseMessage response = await client.DeleteAsync(url);
-                return await RestResponse.FromResponseMessage(response);
+                client.method = UnityWebRequest.kHttpVerbDELETE;
+                client.url = url.ToString();
+
+                client.downloadHandler = new DownloadHandlerBuffer();
+
+                await client.SendWebRequest();
+
+                if (client.isNetworkError || client.isHttpError) {
+                    return new RestResponse() { StatusCode = (HttpStatusCode)client.responseCode, ErrorMessage = client.error, ErrorException = new Exception(client.error), Content = client.downloadHandler.text };
+                } else {
+                    return await RestResponse.FromResponseMessage(client.downloadHandler.text, (HttpStatusCode)client.responseCode);
+                }
             }
         }
 
