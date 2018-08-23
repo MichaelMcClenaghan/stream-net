@@ -1,7 +1,7 @@
 stream-net for Unity
 ===========
 
-This is a fork of shawnspeak's .NET getstream.io client that has been adapted for utilising UnityWebRequests.  As this project uses some C#6 features such as async/await, you need to be using the new .NET 4.6 equivalent runtime (experimental shipped in Unity 2017.1, stable in 2018.1).  This project also relies on the Async Await Support package which can be found on the Unity Asset Store here: https://assetstore.unity.com/packages/tools/integration/async-await-support-101056
+This is a fork of shawnspeak's .NET getstream.io client that has been adapted for utilising UnityWebRequests.  As this project uses some C#6 features such as async/await, you need to be using the new .NET 4.6 equivalent runtime (experimental shipped in Unity 2017.1, stable in 2018.1).  This project also relies on the [Async Await Support](https://assetstore.unity.com/packages/tools/integration/async-await-support-101056) package which can be found on the Unity Asset Store, as well as the [Unity Supported fork of Newtonsoft.Json](https://github.com/SaladLab/Json.Net.Unity3D)
 
 ### Installation
 
