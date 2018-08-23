@@ -25,7 +25,7 @@ namespace Stream.Rest
 
             //client.DefaultRequestHeaders.Accept.Clear()
             //client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
-            unityClient.SetRequestHeader("Accept", "applicaiton/json");
+            unityClient.SetRequestHeader("Accept", "application/json");
 
             //client.Timeout = _timeout;
             unityClient.timeout = _timeout.Seconds;
