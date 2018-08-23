@@ -1,14 +1,11 @@
-stream-net
+stream-net for Unity
 ===========
 
-[![Build status](https://ci.appveyor.com/api/projects/status/9eh9kvhai6aj7p1q?svg=true)](https://ci.appveyor.com/project/shawnspeak/stream-net)
-[![Coverage Status](https://coveralls.io/repos/shawnspeak/stream-net/badge.svg)](https://coveralls.io/github/shawnspeak/stream-net)
+This is a fork of shawnspeak's .NET getstream.io client that has been adapted for utilising UnityWebRequests.  As this project uses some C#6 features such as async/await, you need to be using the new .NET 4.6 equivalent runtime (experimental shipped in Unity 2017.1, stable in 2018.1).  This project also relies on the Async Await Support package which can be found on the Unity Asset Store here: https://assetstore.unity.com/packages/tools/integration/async-await-support-101056
 
-### Installation via Nuget
+### Installation
 
-```sh
-PM> Install-Package stream-net
-```
+Visit the Releases section to download the latest .unitypackage and add it to your project.
 
 ### Usage
 
